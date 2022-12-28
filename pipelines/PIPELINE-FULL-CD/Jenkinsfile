@@ -20,8 +20,6 @@ pipeline {
                 """, label: "Merging code to master"
                 sshagent(credentials: ['my-ssh-key']) {
                     sh """
-                    ssh-add ~/.ssh/id_rsa
-                    eval `ssh-agent -s`
                     git remote set-url origin git@github.com:franlov/todo-list-aws-.git
                     git push origin master
                     """
