@@ -23,7 +23,7 @@ pipeline {
                     git config --global user.name "franlov"
                     git config --global user.email "francisco.leong@gmail.com"
                     git push origin master
-                    """,
+                    """
              }
 
             }
