@@ -9,4 +9,4 @@ python test/unit/TestToDo.py
 pip show coverage
 coverage run --include=src/todoList.py test/unit/TestToDo.py
 coverage report -m
-coverage xml
+coverage html
