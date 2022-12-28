@@ -20,7 +20,7 @@ pipeline {
                 """, label: "Merging code to master"
                 sshagent(credentials: ['my-ssh-key2']) {
                     sh """
-                    git remote set-url origin git@github.com:franlov/todo-list-aws-.git
+                    git remote set-url origin https://github.com/franlov/todo-list-aws-.git
                     git push -u origin master
                     """
              }
