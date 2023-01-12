@@ -160,3 +160,4 @@ def translate_item(text, language, dynamodb=None):
         translation = result.get('TranslatedText')
         print('Result translate:'+str(translation))
         return translation
+        
