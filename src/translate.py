@@ -18,4 +18,3 @@ def translate(event, context):
             "body": ""
         }
     return response
-    
