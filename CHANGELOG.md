@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 27-12-2022
 ### Added
 - Versión inicial de código
+<<<<<<< HEAD
 - Creada rama Feature para trabajar con SAM
+=======
+- Rama develop 
+
+## [1.1.0] - 27-12-2022
+### Added 
+-Modificado margen cobertura
+
+## [1.1.1] - 27-12-2022
+### Added 
+- Arreglos para pasar test de cobertura
+>>>>>>> develop
 
 ## [1.2.0] - 12-01-23
 ### Added 
