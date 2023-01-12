@@ -11,4 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 12-01-23
 ### Added 
-- Agregada funcion nueva
+- Agregada funcion nueva de traduccion 
