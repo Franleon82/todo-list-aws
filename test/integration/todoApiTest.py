@@ -208,6 +208,6 @@ class TestApi(unittest.TestCase):
             response.status_code, 403, "Error en la petición API a {url}"
         )
         self.assertEqual(
-            jsonbody,  None
+            jsonbody,  "{url}"
         )
         print('End - integration test Translate TODO')
