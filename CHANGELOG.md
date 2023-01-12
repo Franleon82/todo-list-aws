@@ -8,3 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Versión inicial de código
 - Creada rama Feature para trabajar con SAM
+
+## [1.2.0] - 12-01-23
+### Added 
+- Agregada funcion nueva
