@@ -143,6 +143,20 @@ def create_todo_table(dynamodb):
     # Wait until the table exists.
     table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
-        raise AssertionError()
+        raise AssertionError()        # pragma: no cover
 
     return table
+
+
+def translate_item(text, language, dynamodb=None):
+    translate = boto3.client(service_name='translate', region_name='us-east-1')
+    try:
+        result = translate.translate_text(
+            Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
+
+    except Exception as e:  # pragma: no cover
+        print(e.response['Error']['Message'])
+    else:
+        translation = result.get('TranslatedText')
+        print('Result translate:'+str(translation))
+        return translation
