@@ -6,6 +6,8 @@ import sys
 import os
 import json
 from mock import patch
+from todoList import delete_item
+
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -217,22 +219,26 @@ class TestDatabaseFunctions(unittest.TestCase):
         "Apprenez DevOps et Cloud à l'UNIR"
         print ('End: test_delete_todo')
         
- class TestDeleteItem(unittest.TestCase):
 
+class TestDeleteItem(unittest.TestCase):
 
     @patch('todoList.boto3')
     def test_client_error(self, mock_boto3):
+        # Set up the mock to raise a ClientError
         mock_client = mock_boto3.client.return_value
         mock_table = mock_client.get_table.return_value
         mock_table.delete_item.side_effect = ClientError({'Error': {'Code': '404', 'Message': 'Not Found'}}, 'delete_item')
 
+        # Call the function that raises the exception
         try:
             delete_item('123')
         except ClientError as e:
+            # Assert that the error message is correct
             self.assertEqual(e.response['Error']['Message'], 'Not Found')
 
     @patch('todoList.boto3')
     def test_success(self, mock_boto3):
+        # Set up the mock to return a successful response
         mock_client = mock_boto3.client.return_
 
 if __name__ == '__main__':
