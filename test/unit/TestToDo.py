@@ -31,7 +31,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
         from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
-        self.table_local = create_todo_table()
+        #self.table_local = create_todo_table() # modificado por mi
         print ('End: setUp')
 
     def tearDown(self):
