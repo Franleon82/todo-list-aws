@@ -5,8 +5,6 @@ from moto import mock_dynamodb
 import sys
 import os
 import json
-from mock import patch
-from mymodule import some_function
 
 @mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
@@ -217,34 +215,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
         "Apprenez DevOps et Cloud à l'UNIR"
         print ('End: test_delete_todo')
-
-
-class TestSomeFunction(unittest.TestCase):
-
-    @patch('mymodule.boto3')
-    def test_client_error(self, mock_boto3):
-        # Set up the mock to raise a ClientError
-        mock_client = mock_boto3.client.return_value
-        mock_client.some_api_call.side_effect = ClientError({'Error': {'Code': '404', 'Message': 'Not Found'}}, 'some_api_call')
-
-        # Call the function that raises the exception
-        try:
-            some_function()
-        except ClientError as e:
-            # Assert that the error message is correct
-            self.assertEqual(e.response['Error']['Message'], 'Not Found')
-    
-    @patch('mymodule.boto3')
-    def test_success(self, mock_boto3):
-        # Set up the mock to return a successful response
-        mock_client = mock_boto3.client.return_value
-        mock_client.some_api_call.return_value = {'Attributes': {'Name': 'John Doe'}}
-
-        # Call the function
-        result = some_function()
-
-        # Assert that the result is as expected
-        self.assertEqual(result, {'Name': 'John Doe'})
 
 if __name__ == '__main__':
     unittest.main()
