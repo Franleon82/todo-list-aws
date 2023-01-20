@@ -160,3 +160,9 @@ def translate_item(text, language, dynamodb=None):
         translation = result.get('TranslatedText')
         print('Result translate:'+str(translation))
         return translation
+
+def test_success(self, mock_boto3):
+        mock_client = mock_boto3.client.return_value
+        mock_client.some_api_call.return_value = {'Attributes': {'Nombre': 'Pepito perez'}}
+        result = some_function()
+        self.assertEqual(result, {'Nombre': 'Pepito perez'})
