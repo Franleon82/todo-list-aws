@@ -68,8 +68,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response put_item:' + str(response))
         self.assertEqual(200, response['statusCode'])
         # Table mock
-        #self.assertEqual(200, put_item(self.text, self.dynamodb)[ #modificado por mi
-        #                 'ResponseMetadata']['HTTPStatusCode']) #modificado por mi
+        self.assertEqual(200, put_item(self.text, self.dynamodb)[ #modificado por mi
+                         'ResponseMetadata']['HTTPStatusCode']) #modificado por mi
         print ('End: test_put_todo')
 
     def test_put_todo_error(self):
