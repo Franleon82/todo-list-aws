@@ -30,7 +30,7 @@ def get_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:       
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         print('Result getItem:'+str(result))
@@ -65,7 +65,7 @@ def put_item(text, dynamodb=None):
             "body": json.dumps(item)
         }
 
-    except ClientError as e:       
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return response
@@ -94,7 +94,7 @@ def update_item(key, text, checked, dynamodb=None):
             ReturnValues='ALL_NEW',
         )
 
-    except ClientError as e:       
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return result['Attributes']
@@ -110,7 +110,7 @@ def delete_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:        
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return
@@ -143,7 +143,7 @@ def create_todo_table(dynamodb):
     # Wait until the table exists.
     table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
-        raise AssertionError()        
+        raise AssertionError()
 
     return table
 
@@ -160,3 +160,4 @@ def translate_item(text, language, dynamodb=None):
         translation = result.get('TranslatedText')
         print('Result translate:'+str(translation))
         return translation
+        
