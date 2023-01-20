@@ -1,7 +1,7 @@
 import warnings
 import unittest
 import boto3
-from moto import mock_dynamodb2
+from moto import mock_dynamodb
 import os
 import json
 import functools
