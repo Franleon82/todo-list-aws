@@ -154,7 +154,7 @@ def translate_item(text, language, dynamodb=None):
         result = translate.translate_text(
             Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
 
-    except Exception as e:  
+    except Exception as e:
         print(e.response['Error']['Message'])
     else:
         translation = result.get('TranslatedText')
