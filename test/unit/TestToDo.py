@@ -30,8 +30,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
         from src.todoList import create_todo_table
-        #self.table = create_todo_table(self.dynamodb)
-        self.table_local = create_todo_table() # modificado por mi
+        self.table = create_todo_table(self.dynamodb)
+        #self.table_local = create_todo_table() # modificado por mi
         print ('End: setUp')
 
     def tearDown(self):
