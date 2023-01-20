@@ -198,6 +198,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
+        
+    def test_1_cannot_add_int_and_str(self):
+        with self.assertRaises(TypeError):
+             1 + '1'
 
 if __name__ == '__main__':
     unittest.main()
