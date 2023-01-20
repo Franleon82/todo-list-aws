@@ -6,7 +6,7 @@ import os
 import json
 import functools
 
-@mock_dynamodb2
+@mock_dynamodb
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
         print ('---------------------')
