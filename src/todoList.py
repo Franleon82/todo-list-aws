@@ -160,17 +160,3 @@ def translate_item(text, language, dynamodb=None):
         translation = result.get('TranslatedText')
         print('Result translate:'+str(translation))
         return translation
-
-
-     @patch('mymodule.boto3')
-    def test_success(self, mock_boto3):
-        # Set up the mock to return a successful response
-        mock_client = mock_boto3.client.return_value
-        mock_client.some_api_call.return_value = {'Attributes': {'Name': 'John Doe'}}
-
-        # Call the function
-        result = some_function()
-
-        # Assert that the result is as expected
-        self.assertEqual(result, {'Name': 'John Doe'})
-
