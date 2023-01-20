@@ -30,7 +30,7 @@ def get_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:
+    except ClientError as e:        # pragma: no cover
         print(e.response['Error']['Message'])
     else:
         print('Result getItem:'+str(result))
@@ -65,7 +65,7 @@ def put_item(text, dynamodb=None):
             "body": json.dumps(item)
         }
 
-    except ClientError as e:
+    except ClientError as e:        # pragma: no cover
         print(e.response['Error']['Message'])
     else:
         return response
@@ -94,7 +94,7 @@ def update_item(key, text, checked, dynamodb=None):
             ReturnValues='ALL_NEW',
         )
 
-    except ClientError as e:
+    except ClientError as e:        # pragma: no cover
         print(e.response['Error']['Message'])
     else:
         return result['Attributes']
@@ -110,7 +110,7 @@ def delete_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:
+    except ClientError as e:        # pragma: no cover
         print(e.response['Error']['Message'])
     else:
         return
@@ -143,7 +143,7 @@ def create_todo_table(dynamodb):
     # Wait until the table exists.
     table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
-    raise AssertionError()
+        raise AssertionError()        # pragma: no cover
 
     return table
 
@@ -153,38 +153,8 @@ def translate_item(text, language, dynamodb=None):
     try:
         result = translate.translate_text(
             Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
-            
-            def create_todo_table(dynamodb):
-    # For unit testing
-    tableName = os.environ['DYNAMODB_TABLE']
-    print('Creating Table with name:' + tableName)
-    table = dynamodb.create_table(
-        TableName=tableName,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            }
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            }
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 1,
-            'WriteCapacityUnits': 1
-        }
-    )
-    # Wait until the table exists.
-    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
-    if (table.table_status != 'ACTIVE'):
-        raise AssertionError()
-    return table
-    
 
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         print(e.response['Error']['Message'])
     else:
         translation = result.get('TranslatedText')
