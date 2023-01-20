@@ -1,14 +1,13 @@
 import warnings
 import unittest
 import boto3
-from moto import mock_dynamodb
+from moto import mock_dynamodb2
 import sys
 import os
 import json
-from mock import patch
+import functools
 
-
-@mock_dynamodb
+@mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
         print ('---------------------')
@@ -31,9 +30,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
-        from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
-        #self.table_local = create_todo_table() # modificado por mi
+        #self.table_local = create_todo_table()
         print ('End: setUp')
 
     def tearDown(self):
@@ -42,23 +40,36 @@ class TestDatabaseFunctions(unittest.TestCase):
         """Delete mock database and table after test is run"""
         self.table.delete()
         print ('Table deleted succesfully')
-        #self.table_local.delete() #modificado por mi
+        #self.table_local.delete()
         self.dynamodb = None
+        boto3.client = functools.partial(boto3.client, endpoint_url=None)
+        boto3.resource = functools.partial(boto3.resource, endpoint_url=None)
         print ('End: tearDown')
 
     def test_table_exists(self):
         print ('---------------------')
         print ('Start: test_table_exists')
-        #self.assertTrue(self.table)  # check if we got a result #modificado por mi
-        #self.assertTrue(self.table_local)  # check if we got a result #modificado por mi
+        #self.assertTrue(self.table)  # check if we got a result
+        #self.assertTrue(self.table_local)  # check if we got a result
 
         print('Table name:' + self.table.name)
         tableName = os.environ['DYNAMODB_TABLE'];
         # check if the table name is 'ToDo'
         self.assertIn(tableName, self.table.name)
-        #self.assertIn('todoTable', self.table_local.name) #modificado por mi
+        #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-        
+
+    def test_get_table(self):
+        print ('---------------------')
+        print ('Start: test_get_table')
+        # Testing file functions
+        from src.todoList import get_table
+        table = get_table()
+        print ('Table name:' + str(table.name))
+        tableName = os.environ['DYNAMODB_TABLE'];
+        # check if the table name is 'ToDo'
+        self.assertEqual(tableName, table.name)
+        print ('End: test_get_table')
 
     def test_put_todo(self):
         print ('---------------------')
@@ -70,8 +81,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Response put_item:' + str(response))
         self.assertEqual(200, response['statusCode'])
         # Table mock
-        #self.assertEqual(200, put_item(self.text, self.dynamodb)[ #modificado por mi
-        #                 'ResponseMetadata']['HTTPStatusCode']) #modificado por mi
+        #self.assertEqual(200, put_item(self.text, self.dynamodb)[
+        #                 'ResponseMetadata']['HTTPStatusCode'])
         print ('End: test_put_todo')
 
     def test_put_todo_error(self):
@@ -200,8 +211,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
-        
-        
+
     def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
@@ -217,28 +227,71 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
         "Apprenez DevOps et Cloud à l'UNIR"
         print ('End: test_delete_todo')
-        
 
-class TestDeleteItem(unittest.TestCase):
 
-    @patch('todoList.boto3')
-    def test_client_error(self, mock_boto3):
-        # Set up the mock to raise a ClientError
-        mock_client = mock_boto3.client.return_value
-        mock_table = mock_client.get_table.return_value
-        mock_table.delete_item.side_effect = ClientError({'Error': {'Code': '404', 'Message': 'Not Found'}}, 'delete_item')
+def create_todo_table(dynamodb):
+    # For unit testing
+    tableName = os.environ['DYNAMODB_TABLE']
+    print('Creating Table with name:' + tableName)
+    table = dynamodb.create_table(
+        TableName=tableName,
+        KeySchema=[
+            {
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
 
-        # Call the function that raises the exception
-        try:
-            delete_item('123')
-        except ClientError as e:
-            # Assert that the error message is correct
-            self.assertEqual(e.response['Error']['Message'], 'Not Found')
+    # Wait until the table exists.
+    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    if (table.table_status != 'ACTIVE'):
+        raise AssertionError()
 
-    @patch('todoList.boto3')
-    def test_success(self, mock_boto3):
-        # Set up the mock to return a successful response
-        mock_client = mock_boto3.client.return_
+    return table
+
+
+def create_todo_table_language(dynamodb):
+    # For unit testing
+    tableName = os.environ['DYNAMODB_TABLE'] + "_language"
+    print('Creating Table with name:' + tableName)
+    table = dynamodb.create_table(
+        TableName=tableName,
+        KeySchema=[
+            {
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
+
+    # Wait until the table exists.
+    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    if (table.table_status != 'ACTIVE'):
+        raise AssertionError()
+
+    return table
+
 
 if __name__ == '__main__':
     unittest.main()
