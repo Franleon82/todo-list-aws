@@ -6,7 +6,6 @@ import sys
 import os
 import json
 from mock import patch
-import todoList
 
 
 @mock_dynamodb
