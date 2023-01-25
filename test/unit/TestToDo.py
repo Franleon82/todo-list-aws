@@ -224,5 +224,22 @@ class TestDatabaseFunctions(unittest.TestCase):
         "Apprenez DevOps et Cloud à l'UNIR"
         print ('End: test_delete_todo')
 
+class TestTranslateItem(unittest.TestCase):
+    def test_translate_item(self):
+        text = "Hello, world!"
+        language = "fr"
+        dynamodb = None
+        expected_result = "Bonjour, le monde!"
+        
+        # Create a mock translate client
+        translate = boto3.client(service_name='translate', region_name='us-east-1')
+        translate.translate_text = lambda x, y, z: {'TranslatedText': expected_result}
+        
+        # Call the function
+        result = translate_item(text, language, dynamodb)
+        
+        # Assert that the result is as expected
+        self.assertEqual(result, expected_result)
+
 if __name__ == '__main__':
     unittest.main()
