@@ -8,7 +8,6 @@ from botocore.exceptions import ClientError
 
 
 
-
 def get_table(dynamodb=None):
     table = None
     try:
