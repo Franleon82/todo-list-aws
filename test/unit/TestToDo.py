@@ -158,7 +158,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
-        responsePut = put_item(self.text, self.dynamodbfail)
+        responsePut = put_item(self.text, self.dynamoFail)
         print ('Response PutItem' + str(responsePut))
         self.assertRaises(
             Exception,
@@ -211,7 +211,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
-        self.table = create_todo_table_language(self.dynamodb)
+        #self.table = create_todo_table_language(self.dynamodb)
         from src.todoList import translate_item
         # Testing file functions
         # Table mock
