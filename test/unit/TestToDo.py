@@ -25,7 +25,7 @@ class TestDatabaseFunctions(unittest.TestCase):
             message="Using or importing.*")
         """Create the mock database and table"""
         self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-        self.dynamodbfail = boto3.resource('dynamodb', region_name='us-west-1')
+        self.dynamoFail = boto3.resource('dynamodb', region_name='us-west-1')
         self.is_local = 'true'
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
@@ -80,7 +80,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         from src.todoList import put_item
         # Table mock
-        self.assertRaises(Exception, put_item("", self.dynamodbfail))
+        self.assertRaises(Exception, put_item("", self.dynamoFail))
  #       self.assertRaises(Exception, put_item("", self.dynamodb))
         print ('End: test_put_todo_error')
 
@@ -110,7 +110,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('-----------------------')
         print ('Start test_get_todo_error')
         from src.todoList import get_item
-        self.assertRaises(Exception, get_item("", self.dynamodbfail))     
+        self.assertRaises(Exception, get_item("", self.dynamoFail))     
         print('End: test_get_todo_error')
 
     def test_list_todo(self):
@@ -205,7 +205,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: test_delete_todo_error')
         from src.todoList import delete_item
         # Testing file functions
-        self.assertRaises(TypeError, delete_item("", self.dynamodfail))
+        self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
     
     def test_translate_todo(self):
@@ -215,31 +215,17 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import translate_item
         # Testing file functions
         # Table mock
+        self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         translation = translate_item(self.text, "en", self.dynamodb)
         print ('Response translate en:' + str(translation))
         self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
         translation = translate_item(self.text, "fr", self.dynamodb)
         print ('Response translate fr:' + str(translation))
         self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
+        self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         "Apprenez DevOps et Cloud à l'UNIR"
         print ('End: test_delete_todo')
 
-class TestTranslateItem(unittest.TestCase):
-    def test_translate_item(self):
-        text = "Hello, world!"
-        language = "fr"
-        dynamodb = None
-        expected_result = "Bonjour, le monde!"
-        
-        # Create a mock translate client
-        translate = boto3.client(service_name='translate', region_name='us-east-1')
-        translate.translate_text = lambda x, y, z: {'TranslatedText': expected_result}
-        
-        # Call the function
-        result = translate_item(text, language, dynamodb)
-        
-        # Assert that the result is as expected
-        self.assertEqual(result, expected_result)
-
 if __name__ == '__main__':
     unittest.main()
+    
