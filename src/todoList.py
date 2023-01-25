@@ -27,7 +27,6 @@ def get_table(dynamodb=None):
 
 
 
-
 def get_item(key, dynamodb=None):
     table = get_table(dynamodb)
     try:
@@ -37,7 +36,7 @@ def get_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:     
+    except ClientError as e:
         # pragma: no cover
         print(e.response['Error']['Message'])
     else:
