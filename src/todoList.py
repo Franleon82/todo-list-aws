@@ -146,4 +146,3 @@ def create_todo_table(dynamodb):
         raise AssertionError()
 
     return table
-    
