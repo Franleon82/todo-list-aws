@@ -7,7 +7,6 @@ import functools
 from botocore.exceptions import ClientError
 
 
-
 def get_table(dynamodb=None):
     table = None
     try:
@@ -26,7 +25,6 @@ def get_table(dynamodb=None):
     return table
 
 
-
 def get_item(key, dynamodb=None):
     table = get_table(dynamodb)
     try:
@@ -43,6 +41,7 @@ def get_item(key, dynamodb=None):
         print('Result getItem:'+str(result))
         if 'Item' in result:
             return result['Item']
+
 
 def get_items(dynamodb=None):
     table = get_table(dynamodb)
