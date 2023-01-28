@@ -33,9 +33,5 @@ s3_prefix = "todo-list-aws"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"production\""
-<<<<<<< HEAD
 image_repositories = []
 disable_rollback=false
-=======
-image_repositories = []
->>>>>>> 8c7a86c3c6b4c11c98b768d7d1e9ce48f2623eb1
