@@ -10,6 +10,7 @@ capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"default\""
 image_repositories = []
 confirm_changeset = true
+disable_rollback=true
 
 [staging]
 [staging.deploy]
@@ -21,6 +22,7 @@ region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"staging\""
 image_repositories = []
+disable_rollback=true
 
 [production]
 [production.deploy]
@@ -32,3 +34,4 @@ region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"production\""
 image_repositories = []
+disable_rollback=false
