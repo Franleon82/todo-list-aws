@@ -15,7 +15,7 @@ def get_table(dynamodb=None):
             boto3.client = functools.partial(boto3.client, endpoint_url=URL)
             boto3.resource = functools.partial(boto3.resource,
                                                endpoint_url=URL)
-        dynamodb = boto3.resource("dynamodb")
+        dynamodb = boto3.resource("dynamodb", region_name='us-east-1')
     # fetch todo from the database
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     return table
@@ -30,7 +30,7 @@ def get_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:        # pragma: no cover
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         print('Result getItem:'+str(result))
@@ -65,7 +65,7 @@ def put_item(text, dynamodb=None):
             "body": json.dumps(item)
         }
 
-    except ClientError as e:        # pragma: no cover
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return response
@@ -94,7 +94,7 @@ def update_item(key, text, checked, dynamodb=None):
             ReturnValues='ALL_NEW',
         )
 
-    except ClientError as e:        # pragma: no cover
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return result['Attributes']
@@ -110,7 +110,7 @@ def delete_item(key, dynamodb=None):
             }
         )
 
-    except ClientError as e:        # pragma: no cover
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         return
@@ -143,7 +143,7 @@ def create_todo_table(dynamodb):
     # Wait until the table exists.
     table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
     if (table.table_status != 'ACTIVE'):
-        raise AssertionError()        # pragma: no cover
+        raise AssertionError()
 
     return table
 
