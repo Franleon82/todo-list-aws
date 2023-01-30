@@ -2,6 +2,7 @@ import warnings
 import unittest
 import boto3
 from moto import mock_dynamodb
+from unittest.mock import patch
 import sys
 import os
 import json
