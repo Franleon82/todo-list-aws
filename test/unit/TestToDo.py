@@ -208,7 +208,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
 
-   def test_translate_todo(self):
+    def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
         self.table = create_todo_table_language(self.dynamodb)
