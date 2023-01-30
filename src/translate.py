@@ -15,9 +15,5 @@ def translate(event, context):
         return {
             "statusCode": 404,
             "body": ""
-<<<<<<< HEAD
         }
-    return response
-=======
-        }
->>>>>>> new-feature-one
+

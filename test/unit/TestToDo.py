@@ -207,11 +207,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
-<<<<<<< HEAD
-    
-=======
-        
->>>>>>> new-feature-one
+
     def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
@@ -225,14 +221,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
         translation = translate_item(self.text, "fr", self.dynamodb)
         print ('Response translate fr:' + str(translation))
-<<<<<<< HEAD
         self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         "Apprenez DevOps et Cloud à l'UNIR"
-=======
         self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
         "Apprenez DevOps et Cloud \u00e1 l'UNIR"
->>>>>>> new-feature-one
         print ('End: test_delete_todo')
 
 if __name__ == '__main__':

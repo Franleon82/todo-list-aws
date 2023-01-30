@@ -18,11 +18,7 @@ pipeline {
                     git checkout -b master origin/master
                     git merge develop
                 """, label: "Merging code to master"
-<<<<<<< HEAD
-                  sshagent(['github']) {
-=======
                    sshagent(['github']) {
->>>>>>> new-feature-one
                     sh "git push origin master"
                 }
 
