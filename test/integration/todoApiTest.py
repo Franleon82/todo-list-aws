@@ -229,7 +229,6 @@ class TestApi(unittest.TestCase):
             json_response['text'], "Exemple de texte d'integration : TRANSLATE", "Error en la petici\u00f3n API a {url}"
             response = json.loads(json_response)
             text = response['text']
-
         )
         #Delete TODO to restore state
         url = BASE_URL + "/todos/" + ID_TODO
