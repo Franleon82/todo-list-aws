@@ -135,7 +135,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         from src.todoList import update_item
         from src.todoList import get_item
-        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        updated_text = "Aprender m\u00e1s cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
@@ -155,7 +155,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: atest_update_todo_error')
         from src.todoList import put_item
         from src.todoList import update_item
-        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        updated_text = "Aprender m\u00e1 cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamoFail)
@@ -207,7 +207,11 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
+<<<<<<< HEAD
     
+=======
+        
+>>>>>>> new-feature-one
     def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
@@ -221,9 +225,14 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
         translation = translate_item(self.text, "fr", self.dynamodb)
         print ('Response translate fr:' + str(translation))
+<<<<<<< HEAD
         self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         "Apprenez DevOps et Cloud à l'UNIR"
+=======
+        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
+        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
+>>>>>>> new-feature-one
         print ('End: test_delete_todo')
 
 if __name__ == '__main__':
