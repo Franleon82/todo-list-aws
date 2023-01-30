@@ -16,4 +16,3 @@ def translate(event, context):
             "statusCode": 404,
             "body": ""
         }
-
