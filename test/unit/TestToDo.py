@@ -215,17 +215,20 @@ class TestDatabaseFunctions(unittest.TestCase):
         translated_text = self.translated_text
 
     class Boto3Client:
-    def translate_text(self, *args, **kwargs):
+        def translate_text(self, *args, **kwargs):
+            translated_text = "texto traducido"
             return {
                 "TranslatedText": translated_text
         }
-        mock_boto3_client.return_value = Boto3Client()
 
-        responsePut = put_item(self.text_to_translate, self.dynamodb)
-        idItem = json.loads(responsePut['body'])['id']
+            mock_boto3_client.return_value = Boto3Client()
 
-        result = translate_item(idItem, "fr", self.dynamodb)
-        self.assertEqual(result['text'], self.translated_text)
+            responsePut = put_item(self.text_to_translate, self.dynamodb)
+            idItem = json.loads(responsePut['body'])['id']
+
+            result = translate_item(idItem, "fr", self.dynamodb)
+            self.assertEqual(result['text'], self.translated_text)
+
 
 
 
