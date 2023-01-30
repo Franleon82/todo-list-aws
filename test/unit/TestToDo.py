@@ -209,28 +209,23 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
         
-    @patch('boto3.client')
-    def test_translate_item(self, mock_boto3_client):
+    def test_translate_todo(self):
+        print ('---------------------')
+        print ('Start: test_translate_todo')
+        #self.table = create_todo_table_language(self.dynamodb)
         from src.todoList import translate_item
-        from src.todoList import put_item
-        translated_text = self.translated_text
-
-    class Boto3Client:
-        def translate_text(self, *args, **kwargs):
-            translated_text = translated_text
-            return {
-                "TranslatedText": translated_text
-        }
-
-            mock_boto3_client.return_value = Boto3Client()
-
-            responsePut = put_item(self.text_to_translate, self.dynamodb)
-            idItem = json.loads(responsePut['body'])['id']
-
-            result = translate_item(idItem, "fr", self.dynamodb)
-            self.assertEqual(result['text'], self.translated_text)
-
-
+        # Testing file functions
+        translation = translate_item(self.text, "en", self.dynamodb)
+        print ('Response translate en:' + str(translation))
+        self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
+        translation = translate_item(self.text, "fr", self.dynamodb)
+        print ('Response translate fr:' + str(translation))
+        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
+        self.assertRaises(TypeError, delete_item("", self.dynamoFail))
+        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
+        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
+        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
+        print ('End: test_delete_todo')
 
 
 if __name__ == '__main__':
