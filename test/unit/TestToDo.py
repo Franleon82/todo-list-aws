@@ -207,13 +207,26 @@ class TestDatabaseFunctions(unittest.TestCase):
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
-
-    def test_translate_todo(self):
-        print ('---------------------')
-        print ('Start: test_translate_todo')
+        
+    @patch('boto3.client')
+    def test_translate_item(self, mock_boto3_client):
         from src.todoList import translate_item
-        self.assertRaises(TypeError, translate_item("", self.dynamoFail))
-        print ('End: test_delete_todo')
+        from src.todoList import put_item
+        translated_text = self.translated_text
+
+        class Boto3Client:
+        def translate_text(self, *args, **kwargs):
+            return {
+                "TranslatedText": translated_text
+        }
+        mock_boto3_client.return_value = Boto3Client()
+
+        responsePut = put_item(self.text_to_translate, self.dynamodb)
+        idItem = json.loads(responsePut['body'])['id']
+
+        result = translate_item(idItem, "fr", self.dynamodb)
+        self.assertEqual(result['text'], self.translated_text)
+
 
 
 if __name__ == '__main__':
