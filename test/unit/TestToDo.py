@@ -218,11 +218,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         translation = translate_item(self.text, "fr", self.dynamodb)
         print ('Response translate fr:' + str(translation))
         self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
-        #self.assertRaises(TypeError, delete_item("", self.dynamoFail))
-        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
-        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
-        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
         print ('End: test_delete_todo')
+
 
 if __name__ == '__main__':
     unittest.main()
