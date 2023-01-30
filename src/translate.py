@@ -10,9 +10,9 @@ def translate(event, context):
         return {
                 "statusCode": 200,
                 "body": json.dumps(translation)
-            }
-    except:
+        }
+    except KeyError as e:
         return {
             "statusCode": 404,
-            "body": ""
+            "body": str(e)
         }
