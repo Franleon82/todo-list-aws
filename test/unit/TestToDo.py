@@ -126,7 +126,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         from src.todoList import update_item
         from src.todoList import get_item
-        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        updated_text = "Aprender m\u00e1s cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
@@ -146,7 +146,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Start: atest_update_todo_error')
         from src.todoList import put_item
         from src.todoList import update_item
-        updated_text = "Aprender más cosas que DevOps y Cloud en la UNIR"
+        updated_text = "Aprender m\u00e1 cosas que DevOps y Cloud en la UNIR"
         # Testing file functions
         # Table mock
         responsePut = put_item(self.text, self.dynamodb)
@@ -199,7 +199,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
         
-            def test_translate_todo(self):
+    def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
         self.table = create_todo_table_language(self.dynamodb)
@@ -211,8 +211,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
         translation = translate_item(self.text, "fr", self.dynamodb)
         print ('Response translate fr:' + str(translation))
-        self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
-        "Apprenez DevOps et Cloud à l'UNIR"
+        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
+        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
         print ('End: test_delete_todo')
 
 if __name__ == '__main__':
