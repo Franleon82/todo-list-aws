@@ -217,7 +217,7 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     class Boto3Client:
         def translate_text(self, *args, **kwargs):
-            translated_text = "texto traducido"
+            translated_text = translated_text
             return {
                 "TranslatedText": translated_text
         }
