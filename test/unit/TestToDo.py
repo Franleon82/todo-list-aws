@@ -214,7 +214,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import put_item
         translated_text = self.translated_text
 
-        class Boto3Client:
+    class Boto3Client:
     def translate_text(self, *args, **kwargs):
             return {
                 "TranslatedText": translated_text
