@@ -16,3 +16,8 @@ def translate(event, context):
             "statusCode": 404,
             "body": str(e)
         }
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": str(e)
+        }
