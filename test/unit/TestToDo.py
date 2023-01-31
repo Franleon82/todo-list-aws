@@ -223,6 +223,25 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translate)
         "Apprenez DevOps et Cloud \u00e1 l'UNIR"
         print ('End: test_delete_todo')
+        
+        import unittest
+import json
+
+class TestTranslate(unittest.TestCase):
+    def test_translate_success(self):
+        event = {'pathParameters': {'id': '1', 'language': 'es'}}
+        context = {}
+        result = translate(event, context)
+        self.assertEqual(result['statusCode'], 200)
+        self.assertIsNotNone(json.loads(result['body']))
+
+    def test_translate_failure(self):
+        event = {'pathParameters': {}}
+        context = {}
+        result = translate(event, context)
+        self.assertEqual(result['statusCode'], 404)
+        self.assertIsNotNone(result['body'])
+
 
 
 if __name__ == '__main__':
