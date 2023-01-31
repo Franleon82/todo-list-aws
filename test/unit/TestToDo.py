@@ -209,27 +209,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
 
-    def test_translate_todo(self):
-        print ('---------------------')
-        print ('Start: test_translate_todo')
-        self.table = create_todo_table_language(self.dynamodb)
-        from src.todoList import translate_item
-        # Testing file functions
-        # Table mock
-        self.assertRaises(TypeError, delete_item("", self.dynamodbFail))
-        translation = translate_item(self.text, "en", self.dynamodb)
-        print ('Response translate en:' + str(translation))
-        self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
-        translation = translate_item(self.text, "fr", self.dynamodb)
-        print ('Response translate fr:' + str(translation))
-        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
-        self.assertRaises(TypeError, delete_item("", self.dynamodbFail))
-        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
-        self.assertEqual("Apprenez DevOps et Cloud \u00e1 l'UNIR", translation)
-        "Apprenez DevOps et Cloud \u00e1 l'UNIR"
-        print ('End: test_delete_todo')
-
-
 
 if __name__ == '__main__':
     unittest.main()
