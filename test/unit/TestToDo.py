@@ -209,7 +209,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamoFail))
         print ('End: test_delete_todo_error')
         
-    def test_translate_todo(self):      # pragma: no cover
+    def test_translate_todo(self):     # pragma: no cover
         print ('---------------------')
         print ('Start: test_translate_todo')
         from src.todoList import translate_item
