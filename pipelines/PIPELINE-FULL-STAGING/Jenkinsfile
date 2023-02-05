@@ -27,7 +27,27 @@ pipeline {
                 }
             }
         }
-       stage('Build') {
+        
+           stage('Sonarqube Test') {
+            steps {
+                        script {
+                            def scannerHome = tool 'sonarqube'  
+                            withSonarQubeEnv('sonarqube-jenkins') { 
+                                sh "${tool('sonarqube')}/bin/sonar-scanner \
+        -Dsonar.projectKey=todo-list-aws \
+                                    -Dsonar.sources=src \
+                                    -Dsonar.tests=test \
+                                    -Dsonar.language=py \
+-Dsonar.exclusions=pipelines \
+                                    -Dsonar.sourceEncoding=UTF-8 \
+                                    -Dsonar.host.url=http://172.17.0.1:9000 \
+                                    -Dsonar.login=squ_f90a18f031a34b1a1ae1fbb0386e733bcdf1f90e"
+          }                    }
+                        }
+            }
+        }
+    }     
+          stage('Build') {
             steps{
                 echo 'Package sam application:'
                 sh "bash pipelines/common-steps/build.sh"
