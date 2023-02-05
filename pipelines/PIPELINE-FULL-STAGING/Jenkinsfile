@@ -45,3 +45,9 @@ pipeline {
             }
 }
 }
+        stage('Clean Ws') {
+            steps {
+                echo 'Cleaning WS...'
+                CleanWS()
+            }
+        }
