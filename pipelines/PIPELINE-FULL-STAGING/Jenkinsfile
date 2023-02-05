@@ -31,7 +31,7 @@ pipeline {
                         script {
                             def scannerHome = tool 'sonarqube'
                             withSonarQubeEnv('sonarqube-jenkins') {
-                                sh "tool('sonarqube')/bin/sonar-scanner \
+                                sh 'tool('sonarqube')/bin/sonar-scanner \
         -Dsonar.projectKey=todo-list-aws \
                                     -Dsonar.sources=src \
                                     -Dsonar.tests=test \
@@ -39,7 +39,7 @@ pipeline {
 -Dsonar.exclusions=pipelines \
                                     -Dsonar.sourceEncoding=UTF-8 \
                                     -Dsonar.host.url=https://23c9-2a0c-5a82-710a-3f00-9543-1289-53ea-9f3.eu.ngrok.io/ \
-                                    -Dsonar.login=squ_b37f40dc692271f1cccc115e5050e614352eae4d"
+                                    -Dsonar.login=squ_b37f40dc692271f1cccc115e5050e614352eae4d'
 }                    }
                         }
             }
