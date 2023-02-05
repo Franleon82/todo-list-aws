@@ -40,7 +40,7 @@ pipeline {
 -Dsonar.exclusions=pipelines \
                                     -Dsonar.sourceEncoding=UTF-8 \
                                     -Dsonar.host.url=http://172.17.0.1:9000 \
-                                    -Dsonar.login=squ_f90a18f031a34b1a1ae1fbb0386e733bcdf1f90e"
+                                    -Dsonar.login=squ_b37f40dc692271f1cccc115e5050e614352eae4d"
           }                    }
                         }
             }
