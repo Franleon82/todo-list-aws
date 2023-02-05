@@ -1,50 +1,53 @@
 pipeline {
     agent any
     stages {
-        stage('SetUp'){
-            steps{
-                echo 'Setup Virtualenv for testing'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
+        stage('SetUp') {
+            steps {
+                echo "Setup Virtualenv for testing"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/setup.sh'
             }
         }
-        stage('Test'){
+        stage('Test') {
             steps{
-                echo 'Static program analysis:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/static_test.sh"
+                echo "Static program analysis:"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/static_test.sh'
                 echo 'Unit testing:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh'
             }
             post {
                 always {
                     script {
-                        def failed = publishCoverage (failUnhealthy: true, 
+                        def failed = publishCoverage (failUnhealthy: true,
                             globalThresholds: [[thresholdTarget: 'Line', unhealthyThreshold: 80.0]],
                             adapters: [coberturaAdapter(
-                                mergeToOneReport: true, 
+                                mergeToOneReport: true,
                                 path: '**/coverage.xml')])
                     }
                 }
             }
         }
-        stage('Sonarqube Test') {
+
+           stage('Sonarqube Test') {
             steps {
-                script {
-                     def scannerHome = tool 'sonarqube'
-                     withSonarQubeEnv('sonarqube-jenkins') {
-                     sh "${tool('sonarqube')}/bin/sonar-scanner \
+                        script {
+                            def scannerHome = tool 'sonarqube'
+                            withSonarQubeEnv('sonarqube-jenkins') {
+                                sh "${tool('sonarqube')}/bin/sonar-scanner \
         -Dsonar.projectKey=todo-list-aws \
                                     -Dsonar.sources=src \
                                     -Dsonar.tests=test \
                                     -Dsonar.language=py \
--Dsonar.exclusions=pipelines \
+                                    -Dsonar.exclusions=pipelines \
                                     -Dsonar.sourceEncoding=UTF-8 \
                                     -Dsonar.host.url=https://23c9-2a0c-5a82-710a-3f00-9543-1289-53ea-9f3.eu.ngrok.io/ \
                                     -Dsonar.login=squ_b37f40dc692271f1cccc115e5050e614352eae4d"
-          }                    }
+                             }
                         }
+                   }
             }
-        }
-        stage('Build') {
+      }
+}
+            stage('Build') {
             steps{
                 echo 'Package sam application:'
                 sh "bash pipelines/common-steps/build.sh"
@@ -69,7 +72,7 @@ pipeline {
             }
         }
     }
-   post { 
+    post { 
         always { 
             echo 'Clean env: delete dir'
             cleanWs()
