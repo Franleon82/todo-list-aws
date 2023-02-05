@@ -46,14 +46,9 @@ pipeline {
 }
 }
         stage('Clean WorkSpace') {
-                  post {
-        always {
-            script {
-                if (getContext(hudson.FilePath)) {
-                    deleteDir()
-                }
-            }
-        }
-    }
+  post {
+   always {
+     deleteDir()
+   }
+ }
 }
-
