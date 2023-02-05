@@ -46,9 +46,7 @@ pipeline {
 }
 }
         stage('Clean WorkSpace') {
-  post {
    always {
      deleteDir()
    }
  }
-}
