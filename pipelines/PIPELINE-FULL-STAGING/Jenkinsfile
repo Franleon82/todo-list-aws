@@ -45,9 +45,3 @@ pipeline {
             }
 }
 }
- stage('Clean WorkSpace') {
-            steps {
-            echo 'Clean env: delete dir'
-            cleanWs()
-    }
-}
