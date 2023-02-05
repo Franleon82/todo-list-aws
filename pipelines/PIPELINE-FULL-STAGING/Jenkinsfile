@@ -46,6 +46,13 @@ pipeline {
 }
 }
         stage('Clean WorkSpace') {
-                 echo 'Clean env: delete dir'
-            cleanWs()
+                  post {
+        always {
+            script {
+                if (getContext(hudson.FilePath)) {
+                    deleteDir()
+                }
             }
+        }
+    }
+ 
