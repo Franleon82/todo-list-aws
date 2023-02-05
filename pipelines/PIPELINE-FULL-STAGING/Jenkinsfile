@@ -1,16 +1,33 @@
 pipeline {
     agent any
     stages {
-        
-        stage('SetUp'){
-            steps{
-                echo 'Setup Virtualenv for testing'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
+        stage('SetUp') {
+            steps {
+                echo "Setup Virtualenv for testing"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/setup.sh'
             }
         }
-        
-        
-           stage('Sonarqube Test') {
+        stage('Test') {
+            steps {
+                echo "Static program analysis:"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/static_test.sh'
+                echo 'Unit testing:'
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh'
+            }
+            post {
+                always {
+                    script {
+                        def failed = publishCoverage (failUnhealthy: true,
+                            globalThresholds: [[thresholdTarget: 'Line', unhealthyThreshold: 80.0]],
+                            adapters: [coberturaAdapter(
+                                mergeToOneReport: true,
+                                path: '**/coverage.xml')])
+                    }
+                }
+            }
+        }
+
+stage('Sonarqube Test') {
             steps {
                         script {
                             def scannerHome = tool 'sonarqube'
@@ -24,44 +41,25 @@ pipeline {
                                     -Dsonar.sourceEncoding=UTF-8 \
                                     -Dsonar.host.url=https://23c9-2a0c-5a82-710a-3f00-9543-1289-53ea-9f3.eu.ngrok.io/ \
                                     -Dsonar.login=squ_b37f40dc692271f1cccc115e5050e614352eae4d"
-          }                    }
+}                    }
                         }
             }
-    }
 }
-        stage('Test'){
-            steps{
-                echo 'Static program analysis:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/static_test.sh"
-                echo 'Unit testing:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh"
-            }
-            post {
-                always {
-                    script {
-                        def failed = publishCoverage (failUnhealthy: true, 
-                            globalThresholds: [[thresholdTarget: 'Line', unhealthyThreshold: 80.0]],
-                            adapters: [coberturaAdapter(
-                                mergeToOneReport: true, 
-                                path: '**/coverage.xml')])
-                    }
-                }
-            }
-        }
-       stage('Build') {
-            steps{
+}
+            stage('Build') {
+            steps {
                 echo 'Package sam application:'
                 sh "bash pipelines/common-steps/build.sh"
             }
         }
-        stage('Deploy'){
-            steps{
+        stage('Deploy') {
+            steps {
                 echo 'Initiating Deployment'
                 sh "bash pipelines/common-steps/deploy.sh"
             }
         }
-        stage('Integration Test after deploy'){
-            steps{
+        stage('Integration Test after deploy') {
+            steps {
                 script {
                     def BASE_URL = sh( script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query 'Stacks[0].Outputs[?OutputKey==`BaseUrlApi`].OutputValue' --region us-east-1 --output text",
                         returnStdout: true)
@@ -69,14 +67,11 @@ pipeline {
                     echo 'Initiating Integration Tests'
                     sh "bash pipelines/common-steps/integration.sh $BASE_URL"
                 }
-                   
             }
         }
-    }
-    post { 
-        always { 
+    post {
+        always {
             echo 'Clean env: delete dir'
             cleanWs()
         }
     }
-
