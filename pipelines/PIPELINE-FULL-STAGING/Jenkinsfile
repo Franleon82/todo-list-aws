@@ -1,38 +1,37 @@
 pipeline {
     agent any
     stages {
-        
-        stage('SetUp'){
-            steps{
+        stage('SetUp') {
+            steps {
                 echo 'Setup Virtualenv for testing'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/setup.sh"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/setup.sh'
             }
         }
-        stage('Test'){
+        stage('Test') {
             steps{
                 echo 'Static program analysis:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/static_test.sh"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/static_test.sh'
                 echo 'Unit testing:'
-                sh "bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh"
+                sh 'bash pipelines/PIPELINE-FULL-STAGING/unit_test.sh'
             }
             post {
                 always {
                     script {
-                        def failed = publishCoverage (failUnhealthy: true, 
+                        def failed = publishCoverage (failUnhealthy: true,
                             globalThresholds: [[thresholdTarget: 'Line', unhealthyThreshold: 80.0]],
                             adapters: [coberturaAdapter(
-                                mergeToOneReport: true, 
+                                mergeToOneReport: true,
                                 path: '**/coverage.xml')])
                     }
                 }
             }
         }
-        
+
            stage('Sonarqube Test') {
             steps {
                         script {
-                            def scannerHome = tool 'sonarqube'  
-                            withSonarQubeEnv('sonarqube-jenkins') { 
+                            def scannerHome = tool 'sonarqube'
+                            withSonarQubeEnv('sonarqube-jenkins') {
                                 sh "${tool('sonarqube')}/bin/sonar-scanner \
         -Dsonar.projectKey=todo-list-aws \
                                     -Dsonar.sources=src \
@@ -45,22 +44,21 @@ pipeline {
           }                    }
                         }
             }
-        }
-    }     
+           }
+    }
           stage('Build') {
-            steps{
+            steps {
                 echo 'Package sam application:'
-                sh "bash pipelines/common-steps/build.sh"
+                sh 'bash pipelines/common-steps/build.sh'
             }
-        }
-        stage('Deploy'){
-            steps{
+          }
+        stage('Deploy') {
+            steps {
                 echo 'Initiating Deployment'
-                sh "bash pipelines/common-steps/deploy.sh"
-            }
+                sh 'bash pipelines/common-steps/deploy.sh'            }
         }
-        stage('Integration Test after deploy'){
-            steps{
+        stage('Integration Test after deploy') {
+            steps {
                 script {
                     def BASE_URL = sh( script: "aws cloudformation describe-stacks --stack-name todo-list-aws-staging --query 'Stacks[0].Outputs[?OutputKey==`BaseUrlApi`].OutputValue' --region us-east-1 --output text",
                         returnStdout: true)
@@ -68,14 +66,11 @@ pipeline {
                     echo 'Initiating Integration Tests'
                     sh "bash pipelines/common-steps/integration.sh $BASE_URL"
                 }
-                   
             }
         }
-    }
-    post { 
-        always { 
+    post {
+        always {
             echo 'Clean env: delete dir'
             cleanWs()
         }
     }
-}
