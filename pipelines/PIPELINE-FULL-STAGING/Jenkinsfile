@@ -47,9 +47,7 @@ pipeline {
 }
  stage('Clean WorkSpace') {
             steps {
-                always {
             echo 'Clean env: delete dir'
             cleanWs()
-        }
     }
 }
